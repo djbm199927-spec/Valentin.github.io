@@ -3,74 +3,75 @@
 <head>
   <title>Valentine's Day Page</title>
   <style>
-    body{
-      text-align:center;
-      font-family:Arial,sans-serif;
-      background:linear-gradient(135deg,#ff69b4 0%,#ffc0cb 100%);
-      color:#e63946;
-      min-height:100vh;
-      display:flex;
-      flex-direction:column;
-      justify-content:center;
-      align-items:center;
-      margin:0;
-      overflow:hidden;
+    body {
+      text-align: center;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #ff69b4 0%, #ffc0cb 100%);
+      color: #e63946;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin: 0;
+      overflow: hidden;
     }
-    h1{font-size:48px;margin-bottom:20px;}
-    #cat{font-size:120px;margin:30px 0;}
-    .question{font-size:32px;margin:20px 0;font-weight:bold;}
-    .buttons{margin:30px 0;position:relative;z-index:2;}
-    button{
-      font-size:20px;
-      margin:10px;
-      padding:15px 30px;
-      cursor:pointer;
-      border:none;
-      border-radius:10px;
-      font-weight:bold;
-      transition:all .25s;
-      user-select:none;
+    h1 { font-size: 48px; margin-bottom: 20px; }
+    #cat { font-size: 120px; margin: 30px 0; }
+    .question { font-size: 32px; margin: 20px 0; font-weight: bold; }
+    .buttons { margin: 30px 0; position: relative; z-index: 2; }
+    button {
+      font-size: 20px;
+      margin: 10px;
+      padding: 15px 30px;
+      cursor: pointer;
+      border: none;
+      border-radius: 10px;
+      font-weight: bold;
+      transition: all 0.3s;
+      user-select: none;
     }
-    #yesButton{
-      background-color:#e63946;
-      color:white;
-      position:relative;
-      --yes-scale:1;
-      transform:scale(var(--yes-scale));
+    #yesButton {
+      background-color: #e63946;
+      color: white;
+      position: relative;
     }
-    #yesButton:hover{
-      transform:scale(calc(var(--yes-scale) * 1.1));
-      box-shadow:0 0 20px #e63946;
+    #yesButton:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 20px #e63946;
     }
-    #noButton{
-      background-color:#457b9d;
-      color:white;
-      position:fixed;
-      left:50%;
-      top:60%;
-      transform:translate(-50%,-50%);
-      z-index:3;
+    #noButton {
+      background-color: #457b9d;
+      color: white;
+      position: fixed;
+      left: 50%;
+      top: 60%;
+      transform: translate(-50%, -50%);
+      z-index: 3;
     }
-    .extraYes{
-      background-color:#e63946;
-      color:white;
-      position:fixed;
-      z-index:4;
-      box-shadow:0 0 18px #e63946;
-      animation:pop .18s ease-out;
+
+    /* botón Sí extra que aparece al clickear No */
+    .extraYes {
+      background-color: #e63946;
+      color: white;
+      position: fixed;
+      z-index: 4;
+      box-shadow: 0 0 18px #e63946;
+      animation: pop .18s ease-out;
     }
-    @keyframes pop{
-      from{transform:scale(.6);opacity:0;}
-      to{transform:scale(1);opacity:1;}
+    @keyframes pop {
+      from { transform: scale(.6); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
     }
-    #message{
-      font-size:36px;
-      margin-top:30px;
-      animation:fadeIn .5s;
-      min-height:100px;
-      z-index:2;
+
+    #message {
+      font-size: 36px;
+      margin-top: 30px;
+      animation: fadeIn 0.5s;
+      min-height: 100px;
+      z-index: 2;
     }
-    @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
   </style>
 </head>
 <body>
@@ -91,20 +92,18 @@
     const message   = document.getElementById('message');
 
     let escapes = 0;
+    const ESCAPES_BEFORE_STOP = 2; // ✅ se corre 2 veces y luego ya no
 
-    // 👉 Cambia este número si quieres que se escape 1 vez, 2 veces, etc.
-    const ESCAPES_BEFORE_CATCH = 2;
-
-    let extraYesCreated = false;
-
-    function clamp(v,min,max){ return Math.min(max, Math.max(min, v)); }
+    let extraYesBtn = null;
 
     function randomPos() {
       const margin = 20;
       const w = noButton.offsetWidth  || 120;
       const h = noButton.offsetHeight || 50;
+
       const maxX = window.innerWidth  - w - margin;
       const maxY = window.innerHeight - h - margin;
+
       const x = Math.random() * (maxX - margin) + margin;
       const y = Math.random() * (maxY - margin) + margin;
       return { x, y };
@@ -117,79 +116,58 @@
       noButton.style.top  = y + "px";
     }
 
-    function growYes() {
-      const scale = clamp(1 + escapes * 0.10, 1, 2.2);
-      yesButton.style.setProperty('--yes-scale', scale.toFixed(2));
-    }
-
     function acceptYes() {
       message.innerHTML = '¡Gachi dice que gracias por aceptar! 😻<br>💕';
       noButton.style.display = 'none';
       yesButton.disabled = true;
       yesButton.style.cursor = 'default';
-      // si existe el extra yes, lo deshabilitamos
-      document.querySelectorAll('.extraYes').forEach(b => {
-        b.disabled = true;
-        b.style.cursor = 'default';
-      });
+      if (extraYesBtn) {
+        extraYesBtn.disabled = true;
+        extraYesBtn.style.cursor = 'default';
+      }
     }
 
-    function spawnExtraYesNearNo() {
-      if (extraYesCreated) return;
-      extraYesCreated = true;
-
-      const rect = noButton.getBoundingClientRect();
-      const extra = document.createElement('button');
-      extra.className = 'extraYes';
-      extra.textContent = 'Sí ❤️';
-
-      // aparece al ladito del NO
-      extra.style.left = (rect.left + rect.width + 12) + 'px';
-      extra.style.top  = rect.top + 'px';
-
-      extra.addEventListener('click', acceptYes);
-      document.body.appendChild(extra);
-    }
-
-    // CLICK en SÍ
     yesButton.addEventListener('click', acceptYes);
 
-    // El NO se escapa solo ESCAPES_BEFORE_CATCH veces
+    // ✅ Solo se escapa 2 veces, después se queda quieto
     noButton.addEventListener('mouseenter', () => {
-      if (escapes < ESCAPES_BEFORE_CATCH) {
+      if (escapes < ESCAPES_BEFORE_STOP) {
         escapes++;
         moveNoButton();
-        growYes();
-      } else {
-        // ya no se mueve: lo puedes clickear
-        noButton.style.boxShadow = "0 0 18px rgba(69,123,157,.7)";
       }
     });
 
-    // Cuando por fin le das click al NO:
-    // - aparece un nuevo botón SÍ al lado
-    // - y además te “fuerza” al SÍ (auto-acepta en 700ms)
+    // ✅ Cuando le das click al NO (ya quieto), aparece otro botón SÍ
     noButton.addEventListener('click', (e) => {
       e.preventDefault();
       e.stopPropagation();
 
-      if (escapes < ESCAPES_BEFORE_CATCH) {
-        // por si lo alcanzan antes, igual se escapa
+      // si todavía está en fase de “correr”, que se escape
+      if (escapes < ESCAPES_BEFORE_STOP) {
         escapes++;
         moveNoButton();
-        growYes();
         return;
       }
 
-      message.innerHTML = 'Ok… pero igual es <strong>Sí</strong> 😼❤️';
-      spawnExtraYesNearNo();
+      message.innerHTML = 'Ok… entonces elige <strong>Sí</strong> 😼❤️';
 
-      setTimeout(() => {
-        acceptYes();
-      }, 700);
+      if (!extraYesBtn) {
+        const rect = noButton.getBoundingClientRect();
+
+        extraYesBtn = document.createElement('button');
+        extraYesBtn.className = 'extraYes';
+        extraYesBtn.textContent = 'Sí ❤️';
+
+        // aparece al ladito del NO
+        extraYesBtn.style.left = (rect.left + rect.width + 12) + 'px';
+        extraYesBtn.style.top  = rect.top + 'px';
+
+        extraYesBtn.addEventListener('click', acceptYes);
+        document.body.appendChild(extraYesBtn);
+      }
     });
 
-    // posicion inicial
+    // posicion inicial random
     setTimeout(moveNoButton, 50);
     window.addEventListener('resize', () => {
       if (noButton.style.display !== 'none') moveNoButton();
