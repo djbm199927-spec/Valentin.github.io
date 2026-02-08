@@ -1,63 +1,98 @@
 <!DOCTYPE html>
 <html>
-<html lang="es">
 <head>
-    <title>My Happy Cat</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Valentine's Day!</title>
+    <title>Valentine's Day Page</title>
     <style>
-        .cat {
-            font-size: 250px;
         body {
-            background-color: #ffcccb; /* Light pink background */
+            text-align: center;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #ff69b4 0%, #ffc0cb 100%);
+            color: #e63946;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            font-family: 'Arial', sans-serif;
+            margin: 0;
+        }
+        h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+        #cat {
+            font-size: 120px;
+            margin: 30px 0;
+        }
+        .question {
+            font-size: 32px;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+        .buttons {
+            margin: 30px 0;
         }
         button {
-            padding: 10px 20px;
+            font-size: 20px;
             margin: 10px;
-            border: none;
-            border-radius: 5px;
+            padding: 15px 30px;
             cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s;
+            border: none;
+            border-radius: 10px;
+            font-weight: bold;
+            transition: all 0.3s;
         }
-        .yes-btn {
-            background-color: #ff69b4; /* Hot pink */
+        #yesButton {
+            background-color: #e63946;
             color: white;
-        }
-        .no-btn {
-            background-color: #ff4500; /* Orange red */
-            color: white;
-        }
-        .no-btn:hover {
             position: relative;
-            transition: all 0.5s;
+        }
+        #yesButton:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px #e63946;
+        }
+        #noButton {
+            background-color: #457b9d;
+            color: white;
+            position: fixed;
+        }
+        #message {
+            font-size: 36px;
+            margin-top: 30px;
+            animation: fadeIn 0.5s;
+            min-height: 100px;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
     </style>
 </head>
 <body>
-    <div class="cat">🐱</div>
-    <h1>😺</h1>
-    <h2>¿Serías mi Valentín?</h2>
-    <button class="yes-btn" onclick="alert('¡Michi dice que gracias por aceptar!')">Sí</button>
-    <button class="no-btn" onmouseover="runAway(event)">No</button>
+    <h1>¡Feliz Día de San Valentín! 💕</h1>
+    <div id="cat">🐱</div>
+    <div class="question">¿Serías mi Valentín?</div>
+    <div class="buttons">
+        <button id="yesButton">Sí ❤️</button>
+        <button id="noButton">No</button>
+    </div>
+    <div id="message"></div>
 
     <script>
-        function runAway(event) {
-            const button = event.target;
-            const x = Math.random() * (window.innerWidth - button.offsetWidth);
-            const y = Math.random() * (window.innerHeight - button.offsetHeight);
-            button.style.position = 'absolute';
-            button.style.left = x + 'px';
-            button.style.top = y + 'px';
-        }
+        const yesButton = document.getElementById('yesButton');
+        const noButton = document.getElementById('noButton');
+        const message = document.getElementById('message');
+
+        yesButton.addEventListener('click', function() {
+            message.innerHTML = '¡Michi dice que gracias por aceptar! 😻<br>¡Te quiero! 💕';
+            noButton.style.display = 'none';
+        });
+
+        noButton.addEventListener('mouseover', function() {
+            const randomX = Math.random() * (window.innerWidth - 100);
+            const randomY = Math.random() * (window.innerHeight - 50);
+            noButton.style.left = randomX + 'px';
+            noButton.style.top = randomY + 'px';
+        });
     </script>
 </body>
-</html>
 </html>
