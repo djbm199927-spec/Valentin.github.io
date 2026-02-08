@@ -1,1 +1,57 @@
-<!DOCTYPE html>\n<html lang="en">\n<head>\n    <meta charset="UTF-8">\n    <meta name="viewport" content="width=device-width, initial-scale=1.0">\n    <title>Happy Valentine's Day!</title>\n    <style>\n        body {\n            margin: 0;\n            height: 100vh;\n            display: flex;\n            flex-direction: column;\n            align-items: center;\n            justify-content: center;\n            background: linear-gradient(135deg, #ff8a8a, #ffb5b5);\n            overflow: hidden;\n            font-family: 'Arial', sans-serif;\n        }\n\n        .cat-emoji {\n            font-size: 100px;\n        }\n\n        .button {\n            padding: 10px 20px;\n            font-size: 20px;\n            color: #fff;\n            border: none;\n            border-radius: 25px;\n            cursor: pointer;\n            margin: 10px;\n            background: linear-gradient(135deg, #85e3ff, #ff85fc);\n            transition: background 0.3s;\n        }\n        \n        .button:hover {\n            background: linear-gradient(135deg, #ff85fc, #ff85a2);\n        }\n\n        @keyframes floating {\n            0% {\n                transform: translateY(0);\n            }\n            50% {\n                transform: translateY(-20px);\n            }\n            100% {\n                transform: translateY(0);\n            }\n        }\n\n        .hearts {\n            position: absolute;\n            font-size: 50px;\n            animation: floating 3s ease-in-out infinite;\n        }\n\n    </style>\n</head>\n<body>\n\n    <div class="cat-emoji">😺</div>\n    <button class="button">Yes</button>\n    <button class="button">No</button>\n\n    <div class="hearts">💖💖💖💖💖</div>\n\n</body>\n</html>\n
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Valentine's Day!</title>
+    <style>
+        body {
+            background-color: #ffcccb; /* Light pink background */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Arial', sans-serif;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        .yes-btn {
+            background-color: #ff69b4; /* Hot pink */
+            color: white;
+        }
+        .no-btn {
+            background-color: #ff4500; /* Orange red */
+            color: white;
+        }
+        .no-btn:hover {
+            position: relative;
+            transition: all 0.5s;
+        }
+    </style>
+</head>
+<body>
+    <h1>😺</h1>
+    <h2>¿Serías mi Valentín?</h2>
+    <button class="yes-btn" onclick="alert('¡Michi dice que gracias por aceptar!')">Sí</button>
+    <button class="no-btn" onmouseover="runAway(event)">No</button>
+
+    <script>
+        function runAway(event) {
+            const button = event.target;
+            const x = Math.random() * (window.innerWidth - button.offsetWidth);
+            const y = Math.random() * (window.innerHeight - button.offsetHeight);
+            button.style.position = 'absolute';
+            button.style.left = x + 'px';
+            button.style.top = y + 'px';
+        }
+    </script>
+</body>
+</html>
