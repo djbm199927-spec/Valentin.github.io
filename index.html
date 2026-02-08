@@ -20,6 +20,7 @@
     #cat { font-size: 120px; margin: 30px 0; }
     .question { font-size: 32px; margin: 20px 0; font-weight: bold; }
     .buttons { margin: 30px 0; position: relative; z-index: 2; }
+
     button {
       font-size: 20px;
       margin: 10px;
@@ -31,6 +32,7 @@
       transition: all 0.3s;
       user-select: none;
     }
+
     #yesButton {
       background-color: #e63946;
       color: white;
@@ -40,17 +42,15 @@
       transform: scale(1.1);
       box-shadow: 0 0 20px #e63946;
     }
+
+    /* ✅ Importante: por defecto NO es fixed, así arranca al lado del Sí */
     #noButton {
       background-color: #457b9d;
       color: white;
-      position: fixed;
-      left: 50%;
-      top: 60%;
-      transform: translate(-50%, -50%);
+      position: relative;
       z-index: 3;
     }
 
-    /* botón Sí extra que aparece al clickear No */
     .extraYes {
       background-color: #e63946;
       color: white;
@@ -61,7 +61,7 @@
     }
     @keyframes pop {
       from { transform: scale(.6); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
+      to   { transform: scale(1); opacity: 1; }
     }
 
     #message {
@@ -92,9 +92,10 @@
     const message   = document.getElementById('message');
 
     let escapes = 0;
-    const ESCAPES_BEFORE_STOP = 2; // ✅ se corre 2 veces y luego ya no
+    const ESCAPES_BEFORE_STOP = 2;
 
     let extraYesBtn = null;
+    let noIsFixed = false;
 
     function randomPos() {
       const margin = 20;
@@ -109,9 +110,22 @@
       return { x, y };
     }
 
+    // ✅ Convierte el NO a fixed pero manteniendo su posición actual en pantalla
+    function pinNoToViewport() {
+      if (noIsFixed) return;
+      const rect = noButton.getBoundingClientRect();
+
+      noButton.style.position = 'fixed';
+      noButton.style.left = rect.left + 'px';
+      noButton.style.top  = rect.top  + 'px';
+      noButton.style.transform = 'none';
+
+      noIsFixed = true;
+    }
+
     function moveNoButton() {
+      pinNoToViewport(); // ✅ solo desde que empieza a correr
       const { x, y } = randomPos();
-      noButton.style.transform = "none";
       noButton.style.left = x + "px";
       noButton.style.top  = y + "px";
     }
@@ -129,7 +143,7 @@
 
     yesButton.addEventListener('click', acceptYes);
 
-    // ✅ Solo se escapa 2 veces, después se queda quieto
+    // ✅ Solo se escapa 2 veces; antes de moverse lo fijamos a la pantalla
     noButton.addEventListener('mouseenter', () => {
       if (escapes < ESCAPES_BEFORE_STOP) {
         escapes++;
@@ -137,12 +151,11 @@
       }
     });
 
-    // ✅ Cuando le das click al NO (ya quieto), aparece otro botón SÍ
+    // ✅ Cuando le das click al NO (después de 2 escapes), aparece otro SÍ al lado
     noButton.addEventListener('click', (e) => {
       e.preventDefault();
       e.stopPropagation();
 
-      // si todavía está en fase de “correr”, que se escape
       if (escapes < ESCAPES_BEFORE_STOP) {
         escapes++;
         moveNoButton();
@@ -152,13 +165,14 @@
       message.innerHTML = 'Ok… entonces elige <strong>Sí</strong> 😼❤️';
 
       if (!extraYesBtn) {
+        // si todavía no estaba fixed, lo fijamos para tener coordenadas correctas
+        pinNoToViewport();
         const rect = noButton.getBoundingClientRect();
 
         extraYesBtn = document.createElement('button');
         extraYesBtn.className = 'extraYes';
         extraYesBtn.textContent = 'Sí ❤️';
 
-        // aparece al ladito del NO
         extraYesBtn.style.left = (rect.left + rect.width + 12) + 'px';
         extraYesBtn.style.top  = rect.top + 'px';
 
@@ -167,10 +181,10 @@
       }
     });
 
-    // posicion inicial random
-    setTimeout(moveNoButton, 50);
+    // ✅ OJO: ya NO movemos el No al cargar
     window.addEventListener('resize', () => {
-      if (noButton.style.display !== 'none') moveNoButton();
+      // si ya está fixed y se achica la pantalla, lo puedes reubicar:
+      if (noIsFixed && noButton.style.display !== 'none') moveNoButton();
     });
   </script>
 </body>
