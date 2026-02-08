@@ -1,57 +1,14 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Valentine's Day!</title>
+    <title>My Happy Cat</title>
     <style>
-        body {
-            background-color: #ffcccb; /* Light pink background */
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            font-family: 'Arial', sans-serif;
-        }
-        button {
-            padding: 10px 20px;
-            margin: 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s;
-        }
-        .yes-btn {
-            background-color: #ff69b4; /* Hot pink */
-            color: white;
-        }
-        .no-btn {
-            background-color: #ff4500; /* Orange red */
-            color: white;
-        }
-        .no-btn:hover {
-            position: relative;
-            transition: all 0.5s;
+        .cat {
+            font-size: 250px;
         }
     </style>
 </head>
 <body>
-    <h1>😺</h1>
-    <h2>¿Serías mi Valentín?</h2>
-    <button class="yes-btn" onclick="alert('¡Michi dice que gracias por aceptar!')">Sí</button>
-    <button class="no-btn" onmouseover="runAway(event)">No</button>
-
-    <script>
-        function runAway(event) {
-            const button = event.target;
-            const x = Math.random() * (window.innerWidth - button.offsetWidth);
-            const y = Math.random() * (window.innerHeight - button.offsetHeight);
-            button.style.position = 'absolute';
-            button.style.left = x + 'px';
-            button.style.top = y + 'px';
-        }
-    </script>
+    <div class="cat">🐱</div>
 </body>
 </html>
