@@ -1,1 +1,98 @@
-<!DOCTYPE html>\n<html>\n<head>\n    <title>Valentine's Day Page</title>\n    <style>\n        body {\n            text-align: center;\n            font-family: Arial, sans-serif;\n            background-color: #ffeef8;\n            color: #e63946;\n        }\n        #cat {\n            width: 100px;\n            position: relative;\n            margin: auto;\n        }\n        button {\n            font-size: 16px;\n            margin: 10px;\n            padding: 10px 20px;\n            cursor: pointer;\n            border: none;\n            border-radius: 5px;\n            background-color: #f1faee;\n            color: #1d3557;\n            transition: transform 0.1s;\n        }\n    </style>\n</head>\n<body>\n    <h1>¡Feliz Día de San Valentín!</h1>\n    <img id="cat" src="https://placekitten.com/200/200" alt="Cute Cat">\n    <p>¿Serías mi Valentín?</p>\n    <button id="yesButton">Sí</button>\n    <button id="noButton">No</button>\n    <p id="message" style="display:none;"></p>\n    <script>\n        const yesButton = document.getElementById('yesButton');\n        const noButton = document.getElementById('noButton');\n        const message = document.getElementById('message');\n        const cat = document.getElementById('cat');\n\n        yesButton.addEventListener('click', function() {\n            message.style.display = 'block';\n            message.innerText = '¡Michi dice que gracias por aceptar!';\n        });\n\n        noButton.addEventListener('mouseover', function() {\n            const maxX = window.innerWidth - noButton.clientWidth;\n            const maxY = window.innerHeight - noButton.clientHeight;\n            const randomX = Math.random() * maxX;\n            const randomY = Math.random() * maxY;\n            noButton.style.transform = `translate(${randomX}px, ${randomY}px)`;\n        });\n    <\/script>\n</body>\n</html>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Valentine's Day Page</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #ff69b4 0%, #ffc0cb 100%);
+            color: #e63946;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+        }
+        h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+        #cat {
+            font-size: 120px;
+            margin: 30px 0;
+        }
+        .question {
+            font-size: 32px;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+        .buttons {
+            margin: 30px 0;
+        }
+        button {
+            font-size: 20px;
+            margin: 10px;
+            padding: 15px 30px;
+            cursor: pointer;
+            border: none;
+            border-radius: 10px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        #yesButton {
+            background-color: #e63946;
+            color: white;
+            position: relative;
+        }
+        #yesButton:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px #e63946;
+        }
+        #noButton {
+            background-color: #457b9d;
+            color: white;
+            position: fixed;
+        }
+        #message {
+            font-size: 36px;
+            margin-top: 30px;
+            animation: fadeIn 0.5s;
+            min-height: 100px;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <h1>¡Feliz Día de San Valentín! 💕</h1>
+    <div id="cat">🐱</div>
+    <div class="question">¿Serías mi Valentín?</div>
+    <div class="buttons">
+        <button id="yesButton">Sí ❤️</button>
+        <button id="noButton">No</button>
+    </div>
+    <div id="message"></div>
+
+    <script>
+        const yesButton = document.getElementById('yesButton');
+        const noButton = document.getElementById('noButton');
+        const message = document.getElementById('message');
+
+        yesButton.addEventListener('click', function() {
+            message.innerHTML = '¡Michi dice que gracias por aceptar! 😻<br>¡Te quiero! 💕';
+            noButton.style.display = 'none';
+        });
+
+        noButton.addEventListener('mouseover', function() {
+            const randomX = Math.random() * (window.innerWidth - 100);
+            const randomY = Math.random() * (window.innerHeight - 50);
+            noButton.style.left = randomX + 'px';
+            noButton.style.top = randomY + 'px';
+        });
+    </script>
+</body>
+</html>
